@@ -69,6 +69,13 @@ function pick(...values: (string | undefined)[]): string | undefined {
   return undefined;
 }
 
+/** How to invoke this CLI, for messages: `onenote-mcp` when installed, else `node /path/dist/index.js`. */
+export function cliCommand(): string {
+  const entry = process.argv[1] ?? "";
+  if (/[\\/]dist[\\/]index\.js$/.test(entry)) return `node "${entry}"`;
+  return "onenote-mcp";
+}
+
 export function settingsPath(cacheDir: string): string {
   return path.join(cacheDir, "config.json");
 }

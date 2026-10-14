@@ -9,7 +9,7 @@ import {
   type ICachePlugin,
   type TokenCacheContext,
 } from "@azure/msal-node";
-import type { AuthFlow, Config } from "./config.js";
+import { cliCommand, type AuthFlow, type Config } from "./config.js";
 
 export type LoginPrompt =
   | { kind: "device"; userCode: string; verificationUri: string; expiresAt: Date }
@@ -77,10 +77,10 @@ export function describeLogin(prompt: LoginPrompt): string {
 
 /** Hints for Microsoft identity platform errors that usually mean an app-registration or policy issue. */
 const AAD_HINTS: [RegExp, string][] = [
-  [/AADSTS700016|AADSTS50059/, "The app ID was not found for this tenant. Check the client ID, and set the tenant to your organisation's tenant ID or domain (onenote-mcp configure --tenant ...)."],
+  [/AADSTS700016|AADSTS50059/, "The app ID was not found for this tenant. Check the client ID, and set the tenant to your organisation's tenant ID or domain (configure --tenant ...)."],
   [/AADSTS7000218|client_assertion|client_secret/, "Enable \"Allow public client flows\" in the app registration (Authentication page), then try again."],
   [/AADSTS50011|AADSTS500113|redirect/i, "Add the redirect URI http://localhost under \"Mobile and desktop applications\" in the app registration (Authentication page)."],
-  [/AADSTS53003|AADSTS530033|conditional access/i, "Blocked by your organisation's Conditional Access policy. If you used device-code sign-in, switch to browser sign-in (onenote-mcp configure --auth browser). Otherwise ask IT to allow this app or device."],
+  [/AADSTS53003|AADSTS530033|conditional access/i, "Blocked by your organisation's Conditional Access policy. If you used device-code sign-in, switch to browser sign-in (configure --auth browser). Otherwise ask IT to allow this app or device."],
   [/AADSTS50105/, "Your account is not assigned to this app. Ask the app owner or IT to assign you, or turn off \"Assignment required\" on the enterprise app."],
   [/AADSTS90094|AADSTS90008|admin consent|AADSTS65001|consent/i, "Admin consent is required. Ask IT to grant admin consent for the Notes permission on this app registration."],
   [/AADSTS50020|AADSTS50194|AADSTS9002331/, "This account type is not allowed by the app registration. Use the tenant that owns the app, or change the app's supported account types."],
@@ -166,7 +166,7 @@ export class Auth {
     if (!this.cfg.clientId) {
       throw new ConfigError(
         "OneNote MCP is not configured yet: no app (client) ID. Register an app in Microsoft Entra " +
-          "(README: \"Register an app\"), then run: onenote-mcp configure --client-id <id> --tenant <tenant>. " +
+          `(README: "Register an app"), then run: ${cliCommand()} configure --client-id <id> --tenant <tenant>. ` +
           "Alternatively set ONENOTE_CLIENT_ID in the MCP server config.",
       );
     }

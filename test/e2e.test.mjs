@@ -410,7 +410,7 @@ test("explains setup when no client ID is configured", async () => {
   const r = await c.callTool({ name: "onenote_list_notebooks", arguments: {} });
   assert.equal(r.isError, true);
   assert.match(textOf(r), /not configured yet/);
-  assert.match(textOf(r), /onenote-mcp configure --client-id/);
+  assert.match(textOf(r), /node ".*dist\/index\.js" configure --client-id/);
   await c.close();
 });
 

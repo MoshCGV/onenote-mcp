@@ -2,7 +2,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { Auth, type LoginPrompt } from "./auth.js";
-import { loadConfig, readSettings, resolveCacheDir, writeSettings, type FileSettings } from "./config.js";
+import { cliCommand, loadConfig, readSettings, resolveCacheDir, writeSettings, type FileSettings } from "./config.js";
 import { GraphClient } from "./graph.js";
 import { OneNote } from "./onenote.js";
 import { registerPrompts } from "./prompts.js";
@@ -86,7 +86,7 @@ async function main(): Promise<void> {
     console.log(`Saved ${file}:`);
     console.log(JSON.stringify(merged, null, 2));
     if (!merged.clientId) console.log("\nStill needed: --client-id <application (client) ID>.");
-    else console.log("\nNext: run `onenote-mcp login` (or `node dist/index.js login`) to sign in.");
+    else console.log(`\nNext, sign in with: ${cliCommand()} login`);
     return;
   }
 
@@ -97,7 +97,7 @@ async function main(): Promise<void> {
     const flowFlag = rest.find((a) => a === "--browser" || a === "--device");
     const status = await auth.status();
     if (status.signedIn) {
-      console.log(`Already signed in as ${status.username}. Run "onenote-mcp logout" first to switch accounts.`);
+      console.log(`Already signed in as ${status.username}. Run "${cliCommand()} logout" first to switch accounts.`);
       return;
     }
     const prompt = await auth.startLogin(flowFlag ? (flowFlag.slice(2) as "browser" | "device") : cfg.authFlow);
@@ -119,7 +119,7 @@ async function main(): Promise<void> {
     console.log(`OneNote path:  ${cfg.basePath}`);
     if (cfg.clientId || cfg.accessToken) {
       const s = await auth.status();
-      console.log(`Account:       ${s.signedIn ? s.username : "not signed in (run: onenote-mcp login)"}`);
+      console.log(`Account:       ${s.signedIn ? s.username : `not signed in (run: ${cliCommand()} login)`}`);
     }
     return;
   }
