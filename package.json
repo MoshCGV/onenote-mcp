@@ -1,0 +1,52 @@
+{
+  "name": "onenote-mcp",
+  "version": "0.2.0",
+  "description": "MCP server for Microsoft OneNote (via Microsoft Graph): read notebooks and pages, view embedded screenshots as images, and create or append report pages.",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "onenote-mcp": "dist/index.js"
+  },
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18.17"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsc -p tsconfig.json --watch",
+    "start": "node dist/index.js",
+    "login": "node dist/index.js login",
+    "test": "npm run build && node --test test/",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@azure/msal-node": "^7.1.0",
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "cheerio": "^1.2.0",
+    "marked": "^18.1.1",
+    "sharp": "^0.35.5",
+    "turndown": "^7.2.4",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "@types/turndown": "^5.0.6",
+    "typescript": "^5.8.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joshmaster2165/onenote-mcp.git"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "onenote",
+    "microsoft-graph",
+    "claude"
+  ]
+}
